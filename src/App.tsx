@@ -3,7 +3,7 @@ import { Menu, Search, User, MapPin, ShoppingCart, Star, Check, Truck, Shield, M
 
 function App() {
   const [selectedImage, setSelectedImage] = useState(0);
-  const [userLocation, setUserLocation] = useState({ city: 'sua região', state: '' });
+  const [userLocation, setUserLocation] = useState({ city: '', state: '' });
 
   const productImages = [
     "/Capturar_600x_1e241e7e-a8a3-4e94-874e-7934f626f48f_600x copy.webp",
@@ -24,12 +24,12 @@ function App() {
           });
         } else {
           // Fallback para localização padrão
-          setUserLocation({ city: 'sua região', state: '' });
+          setUserLocation({ city: '', state: '' });
         }
       })
       .catch(error => {
         console.error('Erro ao buscar localização:', error);
-        setUserLocation({ city: 'sua região', state: '' });
+        setUserLocation({ city: '', state: '' });
       });
   }, []);
 
@@ -86,12 +86,12 @@ function App() {
     }
   ];
 
-  // Função para formatar a localização
-  const formatLocation = () => {
-    if (userLocation.state && userLocation.city !== 'sua região') {
-      return `${userLocation.city} - ${userLocation.state} e Região`;
+  // Função para formatar a localização no container de entrega
+  const formatShippingLocation = () => {
+    if (userLocation.city && userLocation.state) {
+      return `Envio para ${userLocation.city} - ${userLocation.state} e Região`;
     }
-    return `${userLocation.city}${userLocation.state ? `, ${userLocation.state}` : ''} e Região`;
+    return 'Envio para a região';
   };
 
   return (
@@ -228,7 +228,7 @@ function App() {
                   <div>
                     <div className="font-medium text-gray-900 text-sm lg:text-base">Entrega via Correios®</div>
                     <div className="text-xs lg:text-sm text-gray-600">
-                      Envio para {formatLocation()}
+                      {formatShippingLocation()}
                     </div>
                   </div>
                 </div>
