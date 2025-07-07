@@ -3,9 +3,7 @@ import { Menu, Search, User, MapPin, ShoppingCart, Star, Check, Truck, Shield, M
 
 function App() {
   const [selectedImage, setSelectedImage] = useState(0);
-  const [userLocation, setUserLocation] = useState({ city: 'sua região', state: ''
-
-   });
+  const [userLocation, setUserLocation] = useState({ city: 'sua região', state: '' });
 
   const productImages = [
     "/Capturar_600x_1e241e7e-a8a3-4e94-874e-7934f626f48f_600x copy.webp",
@@ -13,18 +11,24 @@ function App() {
     "/oralflow-acessorios-gratis-64167e50b23bb-large_600x_dadc719a-e9c5-4ad1-987e-a1933abe2cb8_600x.webp"
   ];
 
-  // Buscar localização real do usuário usando geoip
+  // Buscar localização real do usuário usando geojs.io
   useEffect(() => {
     fetch('https://get.geojs.io/v1/ip/geo.json')
       .then(res => res.json())
       .then(data => {
+        console.log('Geolocation data:', data); // Para debug
         if (data && data.city && data.region) {
-          setUserLocation({ city: data.city, state: data.region });
+          setUserLocation({ 
+            city: data.city, 
+            state: data.region 
+          });
         } else {
+          // Fallback para localização padrão
           setUserLocation({ city: 'sua região', state: '' });
         }
       })
-      .catch(() => {
+      .catch(error => {
+        console.error('Erro ao buscar localização:', error);
         setUserLocation({ city: 'sua região', state: '' });
       });
   }, []);
@@ -81,6 +85,14 @@ function App() {
       verified: true
     }
   ];
+
+  // Função para formatar a localização
+  const formatLocation = () => {
+    if (userLocation.state && userLocation.city !== 'sua região') {
+      return `${userLocation.city} - ${userLocation.state} e Região`;
+    }
+    return `${userLocation.city}${userLocation.state ? `, ${userLocation.state}` : ''} e Região`;
+  };
 
   return (
     <div className="min-h-screen bg-white">
@@ -216,7 +228,7 @@ function App() {
                   <div>
                     <div className="font-medium text-gray-900 text-sm lg:text-base">Entrega via Correios®</div>
                     <div className="text-xs lg:text-sm text-gray-600">
-                      Envio para {userLocation.city}, {userLocation.state} e Região
+                      Envio para {formatLocation()}
                     </div>
                   </div>
                 </div>
@@ -228,12 +240,12 @@ function App() {
 
             {/* Buy Button */}
             <a
-  href="https://pay.sexpremium.shop/BNjzgPlqp5RgM78" // <-- coloque aqui o link do seu checkout
->
-  <button className="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 lg:py-4 px-6 rounded-lg text-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg">
-    Comprar agora
-  </button>
-</a>
+              href="https://pay.sexpremium.shop/BNjzgPlqp5RgM78"
+            >
+              <button className="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 lg:py-4 px-6 rounded-lg text-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg">
+                Comprar agora
+              </button>
+            </a>
 
             {/* Security Badge */}
             <div className="flex items-center justify-center space-x-2 text-sm text-gray-600">
