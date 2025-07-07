@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Menu, Search, User, MapPin, ShoppingCart, Star, Check, Truck, Shield, MessageCircle, Heart, ThumbsUp } from 'lucide-react';
 
 function App() {
   const [selectedImage, setSelectedImage] = useState(0);
-  const [quantity, setQuantity] = useState(1);
   const [userLocation, setUserLocation] = useState({ city: 'sua região', state: ''
 
    });
